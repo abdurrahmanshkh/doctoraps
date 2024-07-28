@@ -1,0 +1,19 @@
+.form-container{
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+.form{
+    border: 1px solid gray;
+    padding: 30px;
+    width: 30%;
+}
+
+.link{
+    width: 100%;
+    text-align: center;
+    margin-left: 20px;
+}
