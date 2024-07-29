@@ -85,4 +85,32 @@ const registerDoctorController = async (req, res) => {
 
 };
 
-module.exports = { loginController, registerController,authController, registerDoctorController };
+const getAllNotificationsController = async (req, res) => {
+    try{
+        const user = await userModel.findOne({_id:req.body.userId});
+        const seenNotification = user.seenNotification;
+        const notification = user.notification;
+        seenNotification.push(...notification);
+        user.notification=[];
+        user.seenNotification = notification;
+        const updatedUser = await user.save();
+        res.status(200).send({
+            success: true,
+            message:'All notifications marked as read',
+            data: updatedUser
+        });
+    }
+    catch(err){
+        console.log(err);
+        res.status(500).send({success: false, message: `Get All Notifications Controller ${err.message}`});
+    }
+};
+
+
+module.exports = {
+  loginController,
+  registerController,
+  authController,
+  registerDoctorController,
+  getAllNotificationsController,
+};
