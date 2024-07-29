@@ -2,8 +2,10 @@ import React from 'react';
 import '../styles/layout.css';
 import { sidebarMenu } from '../data/Data';
 import { Link, useLocation } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 
 const Layout = ({children}) => {
+  const {user} = useSelector(state => state.user);
   const location = useLocation();
   return (
     <>
@@ -28,7 +30,10 @@ const Layout = ({children}) => {
           </div>
           <div className="content">
             <div className="header">
-              <h1>Welcome to our website</h1>
+              <div className='header-container'>
+                <i className='fa-solid fa-bell'></i>
+                <Link to='/profile'>{user?.name}</Link>
+              </div>
             </div>
             <div className="body">{children}</div>
           </div>

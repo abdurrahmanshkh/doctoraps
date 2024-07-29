@@ -41,7 +41,7 @@ export default function ProtectedRoute({children}) {
             getUser();
         }
         }
-        ,[user]);
+        ,[user, getUser]);
 
     if(localStorage.getItem('token')){
         return children;
