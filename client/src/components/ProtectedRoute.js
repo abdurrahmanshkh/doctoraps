@@ -10,6 +10,7 @@ export default function ProtectedRoute({children}) {
     const {user} = useSelector(state => state.user);
 
     //get user
+    //eslint-disable-next-line
     const getUser = async () => {
       try {
         dispatch(showLoading());
@@ -29,9 +30,11 @@ export default function ProtectedRoute({children}) {
           dispatch(setUser(res.data.data));
         } else {
           <Navigate to="/login" />;
+          localStorage.clear();
         }
       } catch (err) {
         dispatch(hideLoading());
+        localStorage.clear();
         console.log(err);
       }
     };
