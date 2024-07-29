@@ -58,4 +58,15 @@ const authController = async (req, res) => {
     }
 }
 
-module.exports = { loginController, registerController,authController };
+const registerDoctorController = async (req, res) => {
+    try{
+        
+    }
+    catch(err){
+        console.log(err);
+        res.status(500).send({success: false, message: `Register Doctor Controller ${err.message}`});
+    }
+
+};
+
+module.exports = { loginController, registerController,authController, registerDoctorController };
