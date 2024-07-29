@@ -15,5 +15,4 @@ router.post('/getUserData', authmiddleware, authController);
 
 router.post("/register-doctor", authmiddleware, registerDoctorController); 
 
-
 module.exports = router;

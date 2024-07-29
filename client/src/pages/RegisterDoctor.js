@@ -1,16 +1,44 @@
 import { Col, Form, Input, Row, TimePicker } from "antd";
 import Layout from "./../components/Layout";
 import React from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { message } from "antd";
+import { useSelector, useDispatch } from "react-redux";
+import { hideLoading, showLoading } from "../redux/features/alertSlice";
+ 
 
 const RegisterDoctor = () => {
+    const {user} = useSelector(state => state.user);
     const navigate = useNavigate();
+    const dispatch = useDispatch();
 
     //Form Handler
     const onFinishHandler = async (values) => {
-     console.log(values);
+        try{
+            dispatch(showLoading());
+            const res = await axios.post(
+              "/api/v1/user/register-doctor",
+              { ...values, userId: user._id },
+              {
+                headers: {
+                  authorization: `Bearer ${localStorage.getItem("token")}`,
+                },
+              }
+            );
+            dispatch(hideLoading());
+            if(res.data.success){
+                message.success(res.data.message);
+                navigate('/');
+            }
+            else{
+                message.error(res.data.message);
+            }
+        }
+        catch(err){
+            console.log(err);
+            message.error("Something went wrong");
+        }
     };
 
   return (
