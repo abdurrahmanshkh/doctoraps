@@ -102,15 +102,31 @@ const getAllNotificationsController = async (req, res) => {
     }
     catch(err){
         console.log(err);
-        res.status(500).send({success: false, message: `Get All Notifications Controller ${err.message}`});
+        res.status(500).send({success: false, message: `Get All Notifications Controller ${err.message}`, err});
+    }
+};
+
+const deleteAllNotificationsController = async(req,res) => {
+    try{
+        const user = await userModel.findOne({ _id: req.body.userId });
+        user.notification=[];
+        user.seenNotification=[];
+        const updatedUser = await user.save();
+        updatedUser.password = undefined;
+        res.status(200).send({success: true, message: 'All notifications deleted', data: updatedUser});
+    }
+    catch(err){
+        console.log(err);
+        res.status(500).send({success: false, message: `Error while deleting notifications`},err);
     }
 };
 
 
 module.exports = {
-  loginController,
-  registerController,
-  authController,
-  registerDoctorController,
-  getAllNotificationsController,
+    loginController,
+    registerController,
+    authController,
+    registerDoctorController,
+    getAllNotificationsController,
+    deleteAllNotificationsController,
 };
