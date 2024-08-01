@@ -4,6 +4,7 @@ const dotenv = require("dotenv");
 const morgan = require("morgan");
 const connectDB = require("./config/db");
 const userRoutes = require("./routes/userRoutes");
+const adminRoutes = require("./routes/adminRoutes");
 
 //dotenv config
 dotenv.config();
@@ -20,10 +21,9 @@ app.use(express.json());
 
 //routes
 app.use('/api/v1/user', userRoutes);
-
+app.use('/api/v1/admin', adminRoutes);
 
 const port = process.env.PORT || 8080;
 app.listen(port, () => {
     console.log(`Server is running in ${process.env.DEV_MODE} mode on port ${port}`.yellow);
 });
- 
