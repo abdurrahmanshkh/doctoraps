@@ -5,6 +5,7 @@ const morgan = require("morgan");
 const connectDB = require("./config/db");
 const userRoutes = require("./routes/userRoutes");
 const adminRoutes = require("./routes/adminRoutes");
+const doctorRoutes = require("./routes/doctorRoutes");
 
 //dotenv config
 dotenv.config();
@@ -22,6 +23,7 @@ app.use(express.json());
 //routes
 app.use('/api/v1/user', userRoutes);
 app.use('/api/v1/admin', adminRoutes);
+app.use('/api/v1/doctor', doctorRoutes);
 
 const port = process.env.PORT || 8080;
 app.listen(port, () => {
