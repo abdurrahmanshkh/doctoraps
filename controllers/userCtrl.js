@@ -3,6 +3,7 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const doctorModel = require('../models/doctorModel');
 const appointmentModel = require('../models/appointmentModel');
+const moment = require('moment');
 
 //Login Callback
 const loginController = async (req, res) => {
@@ -137,6 +138,7 @@ const getAllDoctorsController = async (req, res) => {
 //book appointment
 const bookAppointmentController = async (req, res) => {
     try{
+        req.body.date = moment(req)
         req.body.status='pending';
         const newAppointment = new appointmentModel(req.body);
         await newAppointment.save();
@@ -154,7 +156,6 @@ const bookAppointmentController = async (req, res) => {
         res.status(500).send({success: false,error, message: `Book Appointment Controller ${error.message}`});
     }
 };
-
 
 module.exports = {
     loginController,
