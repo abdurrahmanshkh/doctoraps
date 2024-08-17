@@ -2,15 +2,19 @@ import { React, useEffect, useState } from "react";
 import axios from "axios";
 import Layout from "../components/Layout";
 import { useParams } from "react-router-dom";
-import { DatePicker, TimePicker } from "antd";
+import { DatePicker, message, TimePicker } from "antd";
+import { useDispatch, useSelector } from "react-redux";
+import { showLoading, hideLoading } from "../redux/features/alertSlice";
 import moment from "moment";
 
 const BookingPage = () => {
+  const { user } = useSelector((state) => state.user);
   const params = useParams();
   const [doctor, setDoctor] = useState(null); // Initialize to null
   const [date, setDate] = useState(null);
-  const [timings, setTimings] = useState(null);
+  const [time, setTime] = useState(null);
   const [isAvailable, setIsAvailable] = useState(null);
+  const dispatch = useDispatch();
 
   // Login user data
   const getUserData = async () => {
@@ -31,6 +35,35 @@ const BookingPage = () => {
         setDoctor(res.data.data);
       }
     } catch (err) {
+      console.log(err);
+    }
+  };
+
+  const handleBooking = async () => {
+    try {
+      dispatch(showLoading());
+      const res = await axios.post(
+        "/api/v1/user/book-appointment",
+        {
+          doctorId: params.doctorId,
+          userId: user._id,
+          doctorInfo: doctor,
+          date: date,
+          userInfo: user,
+          time: time,
+        },
+        {
+          headers: {
+            authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        }
+      );
+      dispatch(hideLoading());
+      if (res.data.success) {
+        message.success(res.data.message);
+      }
+    } catch (err) {
+      dispatch(hideLoading());
       console.log(err);
     }
   };
@@ -74,19 +107,14 @@ const BookingPage = () => {
 
               <TimePicker
                 format="HH:mm"
-                onChange={(values) =>
-                  setTimings([
-                    moment(values[0]).format("HH:mm"),
-                    moment(values[1]).format("HH:mm"),
-                  ])
-                }
+                onChange={(values) => setTime(moment(values).format("HH:mm"))}
               ></TimePicker>
               <button className="btn btn-primary mt-2">
                 Check Availability
               </button>
-              <button className="btn btn-dark mt-2">
+              <button className="btn btn-dark mt-2" onClick={handleBooking}>
                 Book Appointment
-                </button>
+              </button>
             </div>
           </div>
         ) : (
