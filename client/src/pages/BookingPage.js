@@ -81,7 +81,12 @@ const BookingPage = () => {
                   ])
                 }
               ></TimePicker>
-              <button className="btn btn-primary mt-2">Book Appointment</button>
+              <button className="btn btn-primary mt-2">
+                Check Availability
+              </button>
+              <button className="btn btn-dark mt-2">
+                Book Appointment
+                </button>
             </div>
           </div>
         ) : (
